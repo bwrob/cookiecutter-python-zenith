@@ -69,7 +69,7 @@ This automated task (`scripts/sync_example.py`):
 2. Wipes stale files in `../zenith-example` while preserving the `.git/` history and branches.
 3. Copies newly rendered project files into `../zenith-example`.
 4. Generates an updated `uv.lock` via `uv lock`.
-5. Runs `uv run poe fix` inside `../zenith-example` to format Python (Ruff), TOML (Taplo), Markdown (Rumdl), and fix typos.
+5. Runs `uv run poe fix` inside `../zenith-example` to format Python (Ruff), TOML (Taplo), Markdown (Rumdl), YAML/CSS (Prettier), and fix typos.
 
 ### Step 2: Validate Downstream Quality Gate
 

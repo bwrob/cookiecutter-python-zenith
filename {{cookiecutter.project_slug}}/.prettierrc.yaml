@@ -4,7 +4,7 @@
 # Tool: Prettier (https://prettier.io/)
 # Purpose: Opinionated code and data formatter.
 # Why it's in Zenith: Enforces consistent 2-space indentation, 88-character line
-# length, and clean formatting across all YAML manifests and workflow files.
+# length, and clean formatting across all YAML manifests and CSS stylesheets.
 # ==============================================================================
 
 printWidth: 88

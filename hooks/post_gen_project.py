@@ -156,7 +156,6 @@ def main() -> None:
         remove_file("tests", "test_cli.py")
         remove_file("docs", "javascripts", "termynal.js")
         remove_file("docs", "stylesheets", "termynal.css")
-        remove_dir("docs", "stylesheets")
 
     if not include_ci_testing:
         remove_file(".github", "workflows", "python_tests.yaml")

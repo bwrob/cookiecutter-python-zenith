@@ -84,6 +84,10 @@ repos:
       - id: prettier
         name: "🎨 prettier · Format YAML files"
         types: [yaml]
+      - id: prettier
+        name: "🎨 prettier · Format CSS files"
+        alias: prettier-css
+        types: [css]
   - repo: local
     hooks:
       - id: pyrefly

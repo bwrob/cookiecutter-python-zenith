@@ -43,6 +43,8 @@
         "lint",
         "format-check",
         "format-check-toml",
+        "format-yaml",
+        "format-css",
         "check-skills",
         "test",
     ], help = "Run linting, formatting check, skills check, and test suite." }
@@ -50,11 +52,15 @@
         { cmd = "ruff check --fix" },
         { cmd = "ruff format" },
         { cmd = "taplo format" },
+        { cmd = "pre-commit run prettier --all-files" },
+        { cmd = "pre-commit run prettier-css --all-files" },
     ], help = "Auto-fix linting and formatting issues." }
     format = { cmd = "ruff format", help = "Format Python code with Ruff." }
     format-check = { cmd = "ruff format --check", help = "Check formatting with Ruff." }
     format-check-toml = { cmd = "taplo format --check", help = "Check TOML configuration files with Taplo." }
+    format-css = { cmd = "pre-commit run prettier-css --all-files", help = "Format CSS stylesheets with Prettier." }
     format-toml = { cmd = "taplo format", help = "Format TOML configuration files with Taplo." }
+    format-yaml = { cmd = "pre-commit run prettier --all-files", help = "Format YAML configuration files with Prettier." }
     lint = { cmd = "ruff check", help = "Lint codebase with Ruff." }
     sync-example = { cmd = "python scripts/sync_example.py", help = "Render and sync showcase repository (zenith-example)." }
     test = { cmd = "pytest --cov --cov-report=term-missing --cov-report=xml", help = "Run unit test suite with 100% coverage." }

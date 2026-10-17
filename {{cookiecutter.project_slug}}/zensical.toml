@@ -29,11 +29,13 @@
         { "Changelog" = "changelog.md" },
     ]
 
-    {% if cookiecutter.include_cli in [True, "yes", "true", "True", "1"] %}
     extra_css = [
+        "stylesheets/palette.css",
+        "stylesheets/custom.css",
+        {% if cookiecutter.include_cli in [True, "yes", "true", "True", "1"] %}
         "stylesheets/termynal.css",
+        {% endif %}
     ]
-    {% endif %}
 
     extra_javascript = [
         "javascripts/mathjax.js",

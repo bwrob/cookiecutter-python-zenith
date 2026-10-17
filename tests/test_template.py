@@ -51,6 +51,9 @@ def test_default_generation(temp_output_dir: Path) -> None:
     assert (project_dir / ".gitattributes").exists()
     assert (project_dir / ".prettierrc.yaml").exists()
     assert (project_dir / ".pre-commit-config.yaml").exists()
+    precommit_text = (project_dir / ".pre-commit-config.yaml").read_text()
+    assert "prettier" in precommit_text
+    assert "prettier-css" in precommit_text
     assert (project_dir / ".editorconfig").exists()
     assert (project_dir / ".zizmor.yml").exists()
     assert (project_dir / ".gemini" / "settings.json").exists()
@@ -82,6 +85,7 @@ def test_default_generation(temp_output_dir: Path) -> None:
         "skill-creator",
         "tool-complexipy",
         "tool-poethepoet",
+        "tool-prettier",
         "tool-pyrefly",
         "tool-pytest",
         "tool-ruff",
@@ -110,6 +114,8 @@ def test_default_generation(temp_output_dir: Path) -> None:
     )
     assert "[tasks.format-toml]" in poe_text
     assert "[tasks.format-check-toml]" in poe_text
+    assert "[tasks.format-yaml]" in poe_text
+    assert "[tasks.format-css]" in poe_text
     assert '"format-check-toml"' in poe_text
     assert '"taplo format"' in poe_text
     for ref in [
@@ -200,6 +206,8 @@ def test_default_generation(temp_output_dir: Path) -> None:
     assert (project_dir / "docs" / "changelog.md").exists()
     assert (project_dir / "docs" / "javascripts" / "mathjax.js").exists()
     assert (project_dir / "docs" / "javascripts" / "termynal.js").exists()
+    assert (project_dir / "docs" / "stylesheets" / "palette.css").exists()
+    assert (project_dir / "docs" / "stylesheets" / "custom.css").exists()
     assert (project_dir / "docs" / "stylesheets" / "termynal.css").exists()
     assert (project_dir / "docs" / "assets" / "python-logo.svg").exists()
     assert (project_dir / "docs" / "assets" / "python-logo.typ").exists()
@@ -247,6 +255,8 @@ def test_default_generation(temp_output_dir: Path) -> None:
     assert "tasks.precommit" not in poe_text
     assert '"precommit"' not in poe_text
     assert "tasks.format-check" in poe_text
+    assert "tasks.format-yaml" in poe_text
+    assert "tasks.format-css" in poe_text
     assert "tasks.test-fast" in poe_text
     assert "--dist=worksteal --max-worker-restart=0" in poe_text
     assert "tasks.test-lowest" in poe_text
@@ -398,6 +408,8 @@ def test_default_generation(temp_output_dir: Path) -> None:
         re.search(r'options\.annotations_path\s*=\s*"brief"', zensical_text) is not None
     )
     assert re.search(r"options\.show_bases\s*=\s*true", zensical_text) is not None
+    assert "stylesheets/palette.css" in zensical_text
+    assert "stylesheets/custom.css" in zensical_text
     assert "stylesheets/termynal.css" in zensical_text
     assert "javascripts/termynal.js" in zensical_text
     assert "javascripts/mathjax.js" in zensical_text
@@ -637,8 +649,11 @@ def test_no_cli_generation(temp_output_dir: Path) -> None:
     assert not (project_dir / "tests" / "test_cli.py").exists()
     assert not (project_dir / "docs" / "javascripts" / "termynal.js").exists()
     assert not (project_dir / "docs" / "stylesheets" / "termynal.css").exists()
-    assert not (project_dir / "docs" / "stylesheets").exists()
+    assert (project_dir / "docs" / "stylesheets" / "palette.css").exists()
+    assert (project_dir / "docs" / "stylesheets" / "custom.css").exists()
+    assert (project_dir / "docs" / "stylesheets").exists()
     assert "termynal" not in (project_dir / "zensical.toml").read_text()
+    assert "stylesheets/palette.css" in (project_dir / "zensical.toml").read_text()
     assert "termy" not in (project_dir / "docs" / "getting-started.md").read_text()
     assert "termy" not in (project_dir / "docs" / "index.md").read_text()
 
