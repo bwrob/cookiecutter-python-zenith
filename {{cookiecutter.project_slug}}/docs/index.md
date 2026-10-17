@@ -20,38 +20,24 @@ flowchart LR
 
 <div class="termy">
 
-```python exec="on"
-import os
-import subprocess
+```console
+$ uv run {{ cookiecutter.project_slug }} greet "World"
 
-env = {**os.environ, "COLUMNS": "80", "NO_COLOR": "1"}
-res_greet = subprocess.run(
-    ["uv", "run", "{{ cookiecutter.project_slug }}", "greet", "World"],
-    capture_output=True,
-    text=True,
-    env=env,
-    check=True,
-)
-res_help = subprocess.run(
-    ["uv", "run", "{{ cookiecutter.project_slug }}", "--help"],
-    capture_output=True,
-    text=True,
-    env=env,
-    check=True,
-)
-greet_out = "\n".join(line.rstrip() for line in res_greet.stdout.splitlines())
-help_out = "\n".join(line.rstrip() for line in res_help.stdout.splitlines())
+✨ Hello, World!
 
-print("```console")
-print('$ uv run {{ cookiecutter.project_slug }} greet "World"')
-print()
-print(greet_out)
-print()
-print("// Inspect CLI options and help")
-print("$ uv run {{ cookiecutter.project_slug }} --help")
-print()
-print(help_out)
-print("```")
+// Inspect CLI options and help
+$ uv run {{ cookiecutter.project_slug }} --help
+
+<b>Usage: </b><b>{{ cookiecutter.project_slug }} [OPTIONS] COMMAND [ARGS]...</b>
+
+╭─ Options ─────────────────────────────────────────╮
+│ --version  -v        Show version and exit.       │
+│ --help               Show this message and exit.  │
+╰───────────────────────────────────────────────────╯
+╭─ Commands ────────────────────────────────────────╮
+│ greet                Display a personalized       │
+│                      greeting.                    │
+╰───────────────────────────────────────────────────╯
 ```
 
 </div>

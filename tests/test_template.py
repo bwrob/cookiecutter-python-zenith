@@ -92,6 +92,7 @@ def test_default_generation(temp_output_dir: Path) -> None:
         "tool-rumdl",
         "tool-tach",
         "tool-taplo",
+        "tool-termynal",
         "tool-typer",
         "tool-typos",
         "tool-typst",
