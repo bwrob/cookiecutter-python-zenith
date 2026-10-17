@@ -1,5 +1,6 @@
 """Tests for the Zenith template."""
 
+import re
 import tempfile
 from pathlib import Path
 
@@ -86,6 +87,7 @@ def test_default_generation(temp_output_dir: Path) -> None:
         "tool-ruff",
         "tool-rumdl",
         "tool-tach",
+        "tool-taplo",
         "tool-typer",
         "tool-typos",
         "tool-typst",
@@ -98,6 +100,7 @@ def test_default_generation(temp_output_dir: Path) -> None:
         project_dir / ".agents" / "skills" / "project-setup" / "SKILL.md"
     ).read_text()
     assert "disable-model-invocation: true" in setup_skill_text
+    assert "fail_under = 100" in (project_dir / ".coveragerc").read_text()
     poe_text = (project_dir / "poe_tasks.toml").read_text()
     assert "[tasks.zizmor]" in poe_text
     assert '"zizmor"' in poe_text
@@ -105,6 +108,10 @@ def test_default_generation(temp_output_dir: Path) -> None:
         "zizmor --config .zizmor.yml --pedantic --min-severity informational .github/workflows"
         in poe_text
     )
+    assert "[tasks.format-toml]" in poe_text
+    assert "[tasks.format-check-toml]" in poe_text
+    assert '"format-check-toml"' in poe_text
+    assert '"taplo format"' in poe_text
     for ref in [
         "hypothesis.md",
         "pytest-cov.md",
@@ -273,8 +280,11 @@ def test_default_generation(temp_output_dir: Path) -> None:
 
     # Verify markdown-exec, mutation group, and Python 3.15 in pyproject.toml
     pyproject_text = (project_dir / "pyproject.toml").read_text()
-    assert 'license = "MIT"' in pyproject_text
-    assert 'license-files = [ "LICENSE" ]' in pyproject_text
+    assert re.search(r'license\s*=\s*"MIT"', pyproject_text) is not None
+    assert (
+        re.search(r'license-files\s*=\s*\[\s*"LICENSE"\s*\]', pyproject_text)
+        is not None
+    )
     assert "griffe-warnings-deprecated>=" in pyproject_text
     assert "mutation" in pyproject_text
     assert "mutmut>=" in pyproject_text
@@ -311,32 +321,83 @@ def test_default_generation(temp_output_dir: Path) -> None:
     assert "navigation.instant.preview" in zensical_text
     assert "search.suggest" in zensical_text
     assert "toc.follow" in zensical_text
-    assert "signature_crossrefs = true" in zensical_text
-    assert 'members_order = "source"' in zensical_text
-    assert "pymdownx.snippets.check_paths = true" in zensical_text
-    assert "pymdownx.snippets.dedent_subsections = true" in zensical_text
-    assert 'zensical.extensions.preview.targets.include = ["*"]' in zensical_text
+    assert re.search(r"signature_crossrefs\s*=\s*true", zensical_text) is not None
+    assert re.search(r'members_order\s*=\s*"source"', zensical_text) is not None
+    assert (
+        re.search(r"pymdownx\.snippets\.check_paths\s*=\s*true", zensical_text)
+        is not None
+    )
+    assert (
+        re.search(r"pymdownx\.snippets\.dedent_subsections\s*=\s*true", zensical_text)
+        is not None
+    )
+    assert (
+        re.search(
+            r'zensical\.extensions\.preview\.targets\.include\s*=\s*\[\s*"\*"\s*\]',
+            zensical_text,
+        )
+        is not None
+    )
     assert "[project.plugins.gh-admonitions]" in zensical_text
     assert "[project.plugins.markdown-exec]" in zensical_text
     assert "[project.plugins.llmstxt]" in zensical_text
-    assert 'full_output = "llms-full.txt"' in zensical_text
+    assert re.search(r'full_output\s*=\s*"llms-full.txt"', zensical_text) is not None
     assert "changelog.md" in zensical_text
-    assert 'inventories = ["https://docs.python.org/3/objects.inv"]' in zensical_text
-    assert 'options.backlinks = "tree"' in zensical_text
-    assert 'options.extensions = ["griffe_warnings_deprecated"]' in zensical_text
-    assert "options.line_length = 88" in zensical_text
-    assert "options.relative_crossrefs = true" in zensical_text
-    assert "options.scoped_crossrefs = true" in zensical_text
-    assert "options.show_inheritance_diagram = true" in zensical_text
-    assert "options.show_signature_type_parameters = true" in zensical_text
-    assert "options.summary = true" in zensical_text
-    assert "options.type_parameter_headings = true" in zensical_text
-    assert "options.show_symbol_type_heading = true" in zensical_text
-    assert "options.show_symbol_type_toc = true" in zensical_text
-    assert "options.parameter_headings = true" in zensical_text
-    assert "options.docstring_options.ignore_init_summary = true" in zensical_text
-    assert 'options.annotations_path = "brief"' in zensical_text
-    assert "options.show_bases = true" in zensical_text
+    assert (
+        re.search(
+            r'inventories\s*=\s*\[\s*"https://docs\.python\.org/3/objects\.inv"\s*\]',
+            zensical_text,
+        )
+        is not None
+    )
+    assert re.search(r'options\.backlinks\s*=\s*"tree"', zensical_text) is not None
+    assert (
+        re.search(
+            r'options\.extensions\s*=\s*\[\s*"griffe_warnings_deprecated"\s*\]',
+            zensical_text,
+        )
+        is not None
+    )
+    assert re.search(r"options\.line_length\s*=\s*88", zensical_text) is not None
+    assert (
+        re.search(r"options\.relative_crossrefs\s*=\s*true", zensical_text) is not None
+    )
+    assert re.search(r"options\.scoped_crossrefs\s*=\s*true", zensical_text) is not None
+    assert (
+        re.search(r"options\.show_inheritance_diagram\s*=\s*true", zensical_text)
+        is not None
+    )
+    assert (
+        re.search(r"options\.show_signature_type_parameters\s*=\s*true", zensical_text)
+        is not None
+    )
+    assert re.search(r"options\.summary\s*=\s*true", zensical_text) is not None
+    assert (
+        re.search(r"options\.type_parameter_headings\s*=\s*true", zensical_text)
+        is not None
+    )
+    assert (
+        re.search(r"options\.show_symbol_type_heading\s*=\s*true", zensical_text)
+        is not None
+    )
+    assert (
+        re.search(r"options\.show_symbol_type_toc\s*=\s*true", zensical_text)
+        is not None
+    )
+    assert (
+        re.search(r"options\.parameter_headings\s*=\s*true", zensical_text) is not None
+    )
+    assert (
+        re.search(
+            r"options\.docstring_options\.ignore_init_summary\s*=\s*true",
+            zensical_text,
+        )
+        is not None
+    )
+    assert (
+        re.search(r'options\.annotations_path\s*=\s*"brief"', zensical_text) is not None
+    )
+    assert re.search(r"options\.show_bases\s*=\s*true", zensical_text) is not None
     assert "stylesheets/termynal.css" in zensical_text
     assert "javascripts/termynal.js" in zensical_text
     assert "javascripts/mathjax.js" in zensical_text
@@ -505,14 +566,12 @@ def test_default_generation(temp_output_dir: Path) -> None:
     assert (project_dir / "CLAUDE.md").read_text() == agents_text
     assert (project_dir / ".cursorrules").read_text() == agents_text
     assert (project_dir / ".windsurfrules").read_text() == agents_text
-    if hasattr(Path, "is_symlink") and (project_dir / "CLAUDE.md").is_symlink():
+    if (project_dir / "CLAUDE.md").is_symlink():  # pragma: no branch
         import os
 
         assert os.readlink(project_dir / "CLAUDE.md") == "AGENTS.md"
-        if (project_dir / ".cursorrules").is_symlink():
-            assert os.readlink(project_dir / ".cursorrules") == "AGENTS.md"
-        if (project_dir / ".windsurfrules").is_symlink():
-            assert os.readlink(project_dir / ".windsurfrules") == "AGENTS.md"
+        assert os.readlink(project_dir / ".cursorrules") == "AGENTS.md"
+        assert os.readlink(project_dir / ".windsurfrules") == "AGENTS.md"
 
     # Verify AI tool configuration files
     assert "uv run poe:*" in (project_dir / ".claude" / "settings.json").read_text()
@@ -592,7 +651,7 @@ def test_no_cli_generation(temp_output_dir: Path) -> None:
 
     tach_text = (project_dir / "tach.toml").read_text()
     assert '"cli"' not in tach_text
-    assert 'layers                       = [ "core" ]' in tach_text
+    assert re.search(r'layers\s*=\s*\[\s*"core"\s*\]', tach_text) is not None
 
     readme_text = (project_dir / "README.md").read_text()
     assert "CLI Layer" not in readme_text
@@ -886,4 +945,38 @@ else:
     )
     assert result.returncode == 0, (
         f"Lazy loading test failed:\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
+    )
+
+
+def test_generated_toml_formatting_with_taplo(temp_output_dir: Path) -> None:
+    """Test that all generated TOML files (including cosmic-ray.toml) strictly adhere to Taplo formatting."""
+    import shutil
+    import subprocess
+
+    project_dir = Path(
+        cookiecutter(
+            str(TEMPLATE_ROOT),
+            no_input=True,
+            output_dir=str(temp_output_dir),
+            extra_context={
+                "project_name": "Toml App",
+                "include_cli": "yes",
+            },
+        )
+    )
+
+    taplo_bin = shutil.which("taplo")
+    assert taplo_bin is not None, (
+        "taplo executable must be available in dev environment"
+    )
+
+    result = subprocess.run(
+        [taplo_bin, "format", "--check"],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, (
+        f"Taplo format check failed on generated files:\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
     )

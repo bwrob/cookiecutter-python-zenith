@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+import subprocess
 
 PROJECT_DIR = os.path.realpath(os.path.curdir)
 
@@ -95,7 +96,7 @@ def setup_agent_instructions() -> None:
     gemini_settings = os.path.join(gemini_dir, "settings.json")
     if not os.path.isfile(gemini_settings):
         with open(gemini_settings, "w", encoding="utf-8") as f:
-            f.write('{\n  "contextFileName": "AGENTS.md"\n}\n')
+            f.write('{\n    "contextFileName": "AGENTS.md"\n}\n')
 
     claude_dir = os.path.join(PROJECT_DIR, ".claude")
     os.makedirs(claude_dir, exist_ok=True)
@@ -104,24 +105,25 @@ def setup_agent_instructions() -> None:
         with open(claude_settings, "w", encoding="utf-8") as f:
             f.write(
                 "{\n"
-                '  "permissions": {\n'
-                '    "allow": [\n'
-                '      "Bash(uv run poe:*)",\n'
-                '      "Bash(uv run pytest:*)",\n'
-                '      "Bash(uv run ruff:*)",\n'
-                '      "Bash(uv run pyrefly:*)",\n'
-                '      "Bash(uv run complexipy:*)",\n'
-                '      "Bash(uv run tach:*)",\n'
-                '      "Bash(uv run rumdl:*)",\n'
-                '      "Bash(uv run typos:*)",\n'
-                '      "Bash(uv run zizmor:*)",\n'
-                '      "Bash(uv run pre-commit:*)"\n'
-                "    ],\n"
-                '    "deny": [\n'
-                '      "Bash(rm -rf /*)",\n'
-                '      "Bash(git push --force:*)"\n'
-                "    ]\n"
-                "  }\n"
+                '    "permissions": {\n'
+                '        "allow": [\n'
+                '            "Bash(uv run poe:*)",\n'
+                '            "Bash(uv run pytest:*)",\n'
+                '            "Bash(uv run ruff:*)",\n'
+                '            "Bash(uv run pyrefly:*)",\n'
+                '            "Bash(uv run complexipy:*)",\n'
+                '            "Bash(uv run tach:*)",\n'
+                '            "Bash(uv run rumdl:*)",\n'
+                '            "Bash(uv run typos:*)",\n'
+                '            "Bash(uv run taplo:*)",\n'
+                '            "Bash(uv run zizmor:*)",\n'
+                '            "Bash(uv run pre-commit:*)"\n'
+                "        ],\n"
+                '        "deny": [\n'
+                '            "Bash(rm -rf /*)",\n'
+                '            "Bash(git push --force:*)"\n'
+                "        ]\n"
+                "    }\n"
                 "}\n"
             )
 
@@ -176,6 +178,22 @@ def main() -> None:
         remove_file("LICENSE")
 
     setup_agent_instructions()
+    format_toml_files()
+
+
+def format_toml_files() -> None:
+    """Format generated TOML files with Taplo if available in PATH."""
+    taplo_bin = shutil.which("taplo")
+    if taplo_bin:
+        try:
+            subprocess.run(
+                [taplo_bin, "format"],
+                cwd=PROJECT_DIR,
+                check=False,
+                capture_output=True,
+            )
+        except (OSError, subprocess.SubprocessError):
+            pass
 
 
 if __name__ == "__main__":

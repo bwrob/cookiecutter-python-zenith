@@ -7,7 +7,6 @@ name: tool-typos
 version: 1.0.0
 ---
 
-
 # typos Source Code Spell Checker (`tool-typos`)
 
 `typos` is a blazing-fast source code and documentation spell checker written in

@@ -8,7 +8,6 @@ name: python-style-guide
 version: 1.0.0
 ---
 
-
 # Modern Python 3.12+ Style Guide (`python-style-guide`)
 
 This style guide establishes the engineering standards for code in this

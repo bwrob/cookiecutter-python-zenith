@@ -7,6 +7,15 @@
 # entries, and table ordering across all project TOML configuration files.
 # ==============================================================================
 
+exclude = [
+    ".agents/skills/**/templates/**",
+    ".temp/**",
+    ".venv/**",
+    "build/**",
+    "dist/**",
+    "site/**",
+]
+
 [formatting]
     align_entries   = true
     compact_arrays  = false

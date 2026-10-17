@@ -8,10 +8,10 @@
 # ==============================================================================
 
 [cosmic-ray]
-module-path = "src/{{ cookiecutter.package_name }}"
-timeout = 15.0
-excluded-modules = []
-test-command = "pytest"
+    excluded-modules = [  ]
+    module-path      = "src/{{ cookiecutter.package_name }}"
+    test-command     = "pytest"
+    timeout          = 15.0
 
-[cosmic-ray.distributor]
-name = "local"
+    [cosmic-ray.distributor]
+        name = "local"

@@ -7,7 +7,6 @@ name: tool-uv
 version: 1.0.0
 ---
 
-
 # uv Package & Environment Manager (`tool-uv`)
 
 `uv` is an extremely fast, Rust-based Python package and project manager

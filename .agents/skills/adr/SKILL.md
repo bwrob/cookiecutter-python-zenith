@@ -96,6 +96,7 @@ Copy the external template from [templates/adr.md](./templates/adr.md) to
 1. Append the new ADR to the table in `docs/adr/index.md`.
 2. Add the document path to `nav` and `project.plugins.llmstxt` in `zensical.toml`.
 3. Preview the documentation locally:
+
    ```bash
    uv run poe docs-serve
    ```

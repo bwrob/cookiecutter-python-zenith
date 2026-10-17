@@ -1,0 +1,18 @@
+exclude = [
+    ".agents/skills/**/templates/**",
+    ".temp/**",
+    ".venv/**",
+    "*cookiecutter*/**",
+    "build/**",
+    "dist/**",
+    "site/**",
+]
+
+[formatting]
+    align_entries   = true
+    compact_arrays  = false
+    compact_entries = false
+    indent_entries  = true
+    indent_string   = "    "
+    indent_tables   = true
+    reorder_keys    = true

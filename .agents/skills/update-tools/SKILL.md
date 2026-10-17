@@ -7,7 +7,6 @@ name: update-tools
 version: 1.0.0
 ---
 
-
 # Updating Tool Skills (`update-tools`)
 
 This skill defines the maintenance workflow for keeping `.agents/skills/tool-*`

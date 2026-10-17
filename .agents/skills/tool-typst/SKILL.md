@@ -7,7 +7,6 @@ name: tool-typst
 version: 1.0.0
 ---
 
-
 # Typst Layout Engine (`tool-typst`)
 
 `typst` is a modern, blazing-fast typesetting and document layout engine

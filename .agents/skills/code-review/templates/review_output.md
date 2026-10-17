@@ -7,6 +7,7 @@
   - `poe verify-wheel`: [PASSED / FAILED]
 
 #### Prioritized Findings
+
 - 🔴 **Critical**: [Bugs, race conditions, security, file:line + failing input]
 - 🟠 **Design & Architecture**: [Layer/API issues, file:line + violated rule]
 - 🟡 **Style & Typing**: [PEP 695, lint, diff comments, with file:line]

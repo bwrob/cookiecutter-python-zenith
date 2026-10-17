@@ -7,7 +7,6 @@ name: tool-tach
 version: 1.0.0
 ---
 
-
 # Tach Architecture & Boundary Linter (`tool-tach`)
 
 `tach` is an ultra-fast architectural linter and dependency graph visualizer for

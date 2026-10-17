@@ -7,7 +7,6 @@ name: tool-poethepoet
 version: 1.0.0
 ---
 
-
 # Poe the Poet Task Runner (`tool-poethepoet`)
 
 Poethepoet (`poe`) is a task runner for Python projects. It defines and

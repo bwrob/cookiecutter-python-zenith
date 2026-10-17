@@ -6,6 +6,6 @@
 # Why it's in Zenith: Enforces workspace-write sandboxing and auto-discovers AGENTS.md.
 # ==============================================================================
 
-approval_policy = "on-request"
-project_doc_fallback_filenames = ["AGENTS.md", "CLAUDE.md"]
-sandbox_mode = "workspace-write"
+approval_policy                = "on-request"
+project_doc_fallback_filenames = [ "AGENTS.md", "CLAUDE.md" ]
+sandbox_mode                   = "workspace-write"

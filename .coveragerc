@@ -1,0 +1,14 @@
+[run]
+branch = true
+source =
+    scripts
+    tests
+
+[report]
+show_missing = true
+skip_covered = false
+skip_empty = true
+fail_under = 100
+exclude_also =
+    pragma: no cover
+    if __name__ == .__main__.:

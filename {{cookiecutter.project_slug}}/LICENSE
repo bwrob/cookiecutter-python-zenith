@@ -1,7 +1,7 @@
-{% if cookiecutter.license == "MIT" %}
-{% include "licenses/_mit.txt" %}
-{% elif cookiecutter.license == "Apache-2.0" %}
-{% include "licenses/_apache2.txt" %}
-{% elif cookiecutter.license == "BSD-3-Clause" %}
-{% include "licenses/_bsd3.txt" %}
-{% endif %}
+{% if cookiecutter.license == "MIT" -%}
+{% include "licenses/_mit.txt" -%}
+{%- elif cookiecutter.license == "Apache-2.0" -%}
+{% include "licenses/_apache2.txt" -%}
+{%- elif cookiecutter.license == "BSD-3-Clause" -%}
+{% include "licenses/_bsd3.txt" -%}
+{%- endif %}

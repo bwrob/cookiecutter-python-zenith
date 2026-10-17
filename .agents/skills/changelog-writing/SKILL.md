@@ -44,6 +44,7 @@ the [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) standard and
 
 Changelogs follow the standard structure defined in [templates/changelog.md](./templates/changelog.md).
 Key structural elements:
+
 - Top-level `## [Unreleased]` section with categorized subsections (`Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`).
 - Dated release sections (`## [X.Y.Z] - YYYY-MM-DD`).
 - Prominent migration guides immediately beneath version headings when breaking changes occur.
@@ -61,6 +62,7 @@ When adding features, fixing bugs, or addressing security concerns on a feature 
    concise bullet point describing the change.
 4. If the section header does not exist under `## [Unreleased]`, create it.
 5. Include a link to the relevant issue or PR and author credit if applicable:
+
    ```markdown
    - Support streaming JSON-lines response format ([#128](https://github.com/user/project/pull/128)) by @contributor.
    ```
@@ -96,6 +98,7 @@ gh pr view <PR_NUMBER> --json number,title,body,author,url
 ```
 
 For direct commits without a PR number:
+
 ```bash
 git log --format='%H %an <%ae> %s' v0.1.0..HEAD
 ```
@@ -103,6 +106,7 @@ git log --format='%H %an <%ae> %s' v0.1.0..HEAD
 ### Step 3: Verify Actual Behavior in Source Code
 
 Do not trust PR titles alone. Verify what the code actually changed:
+
 - **Breaking Changes**: Check for changed function signatures, renamed CLI options,
   removed module exports, or raised exception types.
 - **Deprecations**: Check for `warnings.warn(..., DeprecationWarning)` or docstring
@@ -112,22 +116,28 @@ Do not trust PR titles alone. Verify what the code actually changed:
 ### Step 4: Promote `[Unreleased]` to Version Header
 
 In `docs/changelog.md`:
+
 1. Change `## [Unreleased]` to include the new version and current date:
+
    ```markdown
    ## [Unreleased]
 
    ## [0.2.0] - 2026-10-17
    ```
+
 2. Sort category headers in standard order: `Added`, `Changed`, `Deprecated`, `Removed`,
    `Fixed`, `Security`.
 3. If breaking changes exist, prominently document migration instructions directly below
    the version heading:
+
    ```markdown
    #### Migration Guide
    The `Client.connect()` method now requires an explicit `timeout` keyword argument.
    Replace `Client.connect("localhost")` with `Client.connect("localhost", timeout=10.0)`.
    ```
+
 4. Update comparison links at the bottom of the changelog (if maintained):
+
    ```markdown
    [Unreleased]: https://github.com/org/repo/compare/v0.2.0...HEAD
    [0.2.0]: https://github.com/org/repo/compare/v0.1.0...v0.2.0
@@ -139,6 +149,7 @@ In `docs/changelog.md`:
 ## 5. Verification Gate
 
 Before committing changelog updates:
+
 1. Verify Markdown formatting with `uv run rumdl check docs/changelog.md`.
 2. Build documentation site with `uv run poe docs-build` to verify navigation and links.
 3. Re-read the drafted entries to confirm zero diff-narrative comments, zero passive voice,

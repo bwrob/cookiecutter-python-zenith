@@ -7,7 +7,6 @@ name: tool-typer
 version: 1.0.0
 ---
 
-
 # Typer CLI Framework (`tool-typer`)
 
 `typer` is the standard library for writing ergonomic, type-safe, and self-documenting
@@ -90,6 +89,7 @@ def legacy(
 ### Deprecated Click-Inherited Parameters
 
 Do not use Click parameters that have been deprecated in modern Typer:
+
 - `is_flag` (inferred automatically from `bool` type)
 - `expose_value`
 - `shell_complete`
@@ -108,6 +108,7 @@ CLI applications must respond near-instantaneously (<50ms). Heavy imports execut
 1. **Defer Heavy Imports**: Do not import heavy libraries (e.g., database drivers, machine learning frameworks, large data parsers) at the top of `cli.py`. Import them lazily inside the command body where they are actually executed.
 2. **Import Rich Utilities Inside Functions**: When using internal formatting or progress helpers, import lazily or use `Console()` instances constructed within commands if startup latency is critical.
 3. **Enforce with Ruff**: Use `flake8-tidy-imports` to detect and forbid premature top-level imports:
+
    ```toml
    [tool.ruff.lint.flake8-tidy-imports]
    banned-module-level-imports = ["typer.rich_utils"]
@@ -136,6 +137,7 @@ def status() -> None:
 ### Testing Terminal Environment Overrides
 
 When testing Typer CLI applications with pytest:
+
 - Use `export TERMINAL_WIDTH=3000` to prevent unpredictable word-wrapping diffs in assertions across different terminal window sizes.
 - Set `_TYPER_FORCE_DISABLE_TERMINAL=1` to ensure non-interactive, predictable outputs during automated test runs.
 
@@ -167,8 +169,8 @@ $ uv run my-app --help
 </div>
 ```
 
-- Lines starting with `$ ` animate typing with a blinking cursor.
-- Lines starting with `// ` format as styled callout comments (`💬 ...`).
+- Lines starting with `$` animate typing with a blinking cursor.
+- Lines starting with `//` format as styled callout comments (`💬 ...`).
 - Supports Rich HTML colors (`<font color="...">`, `<b>`) and box-drawing characters.
 
 ---
@@ -212,6 +214,7 @@ In Zenith projects with `include_cli=yes`, the standard layout is defined in
 [examples/cli_recipe.py](./examples/cli_recipe.py).
 
 Key implementation components:
+
 - Explicit `app = typer.Typer(no_args_is_help=True, rich_markup_mode="rich")`.
 - Eager version flag callback (`version_callback`) raising `typer.Exit`.
 - Subcommands registered via `@app.command()` with PEP 593 `Annotated` parameters.

@@ -7,7 +7,6 @@ name: tool-rumdl
 version: 1.0.0
 ---
 
-
 # rumdl Markdown Linter & Formatter (`tool-rumdl`)
 
 `rumdl` is an extremely fast markdown linter and formatter written in Rust. It

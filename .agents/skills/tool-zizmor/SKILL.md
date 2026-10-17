@@ -7,7 +7,6 @@ name: tool-zizmor
 version: 1.0.0
 ---
 
-
 # zizmor GitHub Actions Security Static Analyzer (`tool-zizmor`)
 
 `zizmor` is a high-performance static security analysis tool for GitHub Actions
@@ -47,7 +46,8 @@ rules:
     disable: true
 ```
 
-### Key Rules Checked:
+### Key Rules Checked
+
 - **`dangerous-triggers`**: Flags insecure triggers such as `pull_request_target`.
 - **`cache-poisoning`**: Detects enabled caches in release/publish pipelines that could be manipulated.
 - **`artipacked`**: Detects missing `persist-credentials: false` in `actions/checkout`.

@@ -22,6 +22,7 @@ version: 1.0.0
 ## 2. Standard Workflow & Procedures
 
 ### Step 1: <Initial Phase>
+
 <Actionable instructions, CLI commands, or decision trees.>
 
 ```bash
@@ -29,6 +30,7 @@ uv run <command>
 ```
 
 ### Step 2: <Execution Phase>
+
 <Actionable instructions. If document, code, or configuration templates are required,
 link to external templates in `./templates/` rather than embedding large inline blocks.>
 

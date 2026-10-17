@@ -7,7 +7,6 @@ name: tool-ruff
 version: 1.0.0
 ---
 
-
 # Ruff Linter & Formatter (`tool-ruff`)
 
 `ruff` is an extremely fast Python linter and code formatter written in Rust by

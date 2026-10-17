@@ -7,7 +7,6 @@ name: tool-pytest
 version: 1.0.0
 ---
 
-
 # pytest Testing Stack (`tool-pytest`)
 
 Zenith equips `pytest` with a modern, high-speed testing toolchain:

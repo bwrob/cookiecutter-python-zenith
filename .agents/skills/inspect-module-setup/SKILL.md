@@ -7,7 +7,6 @@ name: inspect-module-setup
 version: 1.0.0
 ---
 
-
 # Inspect Module Setup (`inspect-module-setup`)
 
 This skill defines the structured workflow for auditing, benchmarking, and
@@ -427,6 +426,7 @@ audit or a batch cohort synthesis) **MUST** follow the standardized template def
 👉 [templates/proposal_template.md](./templates/proposal_template.md)
 
 Key required sections include:
+
 1. **Executive Summary & Architectural Rationale**: Detailed explanation of the mechanism, edge cases solved, and why Zenith benefits.
 2. **Benchmark Source & Context**: Specific repositories, file paths, and discovered patterns.
 3. **Gap Analysis**: Comparison matrix between target repositories and `{{cookiecutter.project_slug}}`.

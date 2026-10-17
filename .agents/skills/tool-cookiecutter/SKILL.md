@@ -7,7 +7,6 @@ name: tool-cookiecutter
 version: 2.0.0
 ---
 
-
 # Cookiecutter Template Engine (`tool-cookiecutter`)
 
 `cookiecutter` is a command-line utility and Python library that scaffolds
@@ -127,6 +126,7 @@ Cookiecutter 2.2.0+ supports native JSON booleans (`true` / `false`).
 The interactive prompt automatically validates user responses (`y/n/yes/no/true/false/1/0/on/off`).
 
 - In `cookiecutter.json`:
+
   ```json
   {
     "include_cli": true,
@@ -134,13 +134,17 @@ The interactive prompt automatically validates user responses (`y/n/yes/no/true/
     "include_ci_publishing": true
   }
   ```
+
 - In Jinja template files:
+
   ```jinja
   {% if cookiecutter.include_cli -%}
   dependencies = [ "rich>=14.0.0", "typer>=0.16.0" ]
   {%- endif %}
   ```
+
 - In Python hooks (`hooks/post_gen_project.py`):
+
   ```python
   include_cli = "{{ cookiecutter.include_cli }}" in ("True", "true", "1")
   if not include_cli:
@@ -150,13 +154,16 @@ The interactive prompt automatically validates user responses (`y/n/yes/no/true/
 ### C. Private Variables (`_` unrendered vs `__` rendered)
 
 - **Unrendered Private Variables (`_name`)**: Constants not prompted to the user and not rendered with Jinja. Useful for internal configurations, line endings, or copy lists:
+
   ```json
   {
     "_new_lines": "\n",
     "_copy_without_render": ["docs/assets/*", "*.svg", "*.png", "*.ico"]
   }
   ```
+
 - **Rendered Private Variables (`__name`)**: Computed dynamically with Jinja from user inputs without prompting:
+
   ```json
   {
     "project_name": "Demo App",
@@ -195,6 +202,7 @@ Enforce POSIX LF line endings across all platforms to prevent git dirty working 
 ### F. Built-In & Custom Jinja Extensions (`_extensions`)
 
 Cookiecutter includes five built-in extensions in `StrictEnvironment`:
+
 1. `cookiecutter.extensions.SlugifyExtension`: `{{ cookiecutter.name | slugify }}` or `| slugify(separator='_')`
 2. `cookiecutter.extensions.TimeExtension`: `{% now 'utc', '%Y' %}` (dynamic current year in `LICENSE` and docs)
 3. `cookiecutter.extensions.UUIDExtension`: `{{ uuid4() }}`
@@ -202,6 +210,7 @@ Cookiecutter includes five built-in extensions in `StrictEnvironment`:
 5. `cookiecutter.extensions.JsonifyExtension`: `{{ cookiecutter.mapping | jsonify }}`
 
 External Jinja extensions can be registered via `_extensions`:
+
 ```json
 {
   "_extensions": [
@@ -230,6 +239,7 @@ def sanitize_python_identifier(value: str) -> str:
 ```
 
 Register it in `cookiecutter.json`:
+
 ```json
 {
   "_extensions": ["local_extensions.sanitize_python_identifier"]
@@ -262,6 +272,7 @@ Cookiecutter supports three distinct lifecycle hooks:
 | **`post_gen_project.py`** | After all files are rendered | Generated project directory | Yes (rendered) | File pruning, educational header stripping, git init |
 
 ### Hook Error Handling
+
 If any hook exits with a non-zero exit code (`sys.exit(1)`), Cookiecutter immediately halts generation and removes the partially-generated directory (unless `--keep-project-on-failure` is set).
 
 ---

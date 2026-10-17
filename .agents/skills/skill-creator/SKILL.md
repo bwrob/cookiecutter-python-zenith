@@ -8,7 +8,6 @@ name: skill-creator
 version: 1.0.0
 ---
 
-
 # Agent Skill Creator (`skill-creator`)
 
 This skill establishes the architectural standards, directory conventions, and
@@ -26,15 +25,18 @@ read only when activated.
 Choose the appropriate structural tier based on the skill's complexity:
 
 ### Tier A: Simple Skill (Single File)
+
 - **When to Use**: Straightforward procedures, tool cheat-sheets, or concise workflows
   requiring under 100–150 lines of instructions without heavy boilerplate.
 - **Structure**: A single `SKILL.md` file located at `.agents/skills/<name>/SKILL.md`.
 - **Constraint**: Do not create subdirectories for simple single-page instructions.
 
 ### Tier B: Complex Skill (Structured Directory)
+
 - **When to Use**: Workflows involving document/code templates, detailed reference manuals,
   multi-file examples, or automation helper scripts.
 - **Structure**: An organized directory following the canonical pattern:
+
   ```text
   .agents/skills/<name>/
   ├── SKILL.md          # Required: Lean core workflow, decision logic & frontmatter
@@ -49,6 +51,7 @@ Choose the appropriate structural tier based on the skill's complexity:
 ## 2. Hard Architectural Rules
 
 ### Rule 1: Templates Must Live in Separate Files
+
 - **Never embed large templates inline**: Do not include multi-screen document skeletons,
   boilerplate code templates, config files, or report formats directly inside `SKILL.md`.
 - **Place in `templates/`**: Store every template in a dedicated file under `templates/`
@@ -57,6 +60,7 @@ Choose the appropriate structural tier based on the skill's complexity:
   links: `[templates/SKILL_TEMPLATE.md](./templates/SKILL_TEMPLATE.md)`.
 
 ### Rule 2: Lengthy References & Multi-File Examples in Dedicated Directories
+
 - **References (`references/`)**: Detailed technical manuals, third-party plugin lists,
   or deep API specifications must be split into focused documents (e.g.,
   `references/hypothesis.md`, `references/declarative_primitives.md`).
@@ -65,12 +69,14 @@ Choose the appropriate structural tier based on the skill's complexity:
   code blocks.
 
 ### Rule 3: Progressive Disclosure & Lean `SKILL.md`
+
 - Keep `SKILL.md` focused strictly on **triggers, decision paths, and core step-by-step
   instructions**.
 - The model should be able to read `SKILL.md` in a single pass without consuming excess
   context window. Sub-files are read on demand when the specific step requires them.
 
 ### Rule 4: Zero Slop & Compressed Writing
+
 - Avoid conversational filler, chatty introductions, or obvious language explanations.
 - Use imperative, concise instructions, high-density Markdown tables, and exact shell
   commands.
@@ -82,14 +88,17 @@ Choose the appropriate structural tier based on the skill's complexity:
 Follow these steps when creating a new skill:
 
 ### Step 1: Determine Scope & Tier
+
 1. Identify the workflow's trigger conditions and boundaries.
 2. Determine if it is a Tier A (single `SKILL.md`) or Tier B (structured directory).
 3. If Tier B, initialize the directory layout:
+
    ```bash
    mkdir -p .agents/skills/<name>/{templates,examples,references,scripts}
    ```
 
 ### Step 2: Author Frontmatter & Core Instructions
+
 1. Copy [templates/SKILL_TEMPLATE.md](./templates/SKILL_TEMPLATE.md) to `.agents/skills/<name>/SKILL.md`.
 2. Craft an authoritative YAML frontmatter block:
    - **`name`**: Lowercase, hyphenated (e.g., `changelog-writing`, `git-workflow`).
@@ -97,12 +106,14 @@ Follow these steps when creating a new skill:
      use it, including explicit keywords and triggers.
 
 ### Step 3: Extract Templates and References
+
 1. Extract any file templates into `templates/<filename>`.
 2. Extract any deep reference tables or bulky manuals into `references/<filename>`.
 3. Extract complete code examples into `examples/<filename>`.
 4. Link all extracted assets from `SKILL.md` using relative links.
 
 ### Step 4: Synchronize & Register
+
 1. If the skill applies to generated projects:
    - Copy the skill directory to `{{cookiecutter.project_slug}}/.agents/skills/<name>/`.
    - Add the skill name to the workflow skills list in `AGENTS.md` and
@@ -112,7 +123,9 @@ Follow these steps when creating a new skill:
    the root `.agents/skills/`.
 
 ### Step 5: Verify Formatting & Tests
+
 1. Verify pre-commit hooks and tests:
+
    ```bash
    uv run pre-commit run --all-files
    uv run pytest tests/test_template.py

@@ -56,7 +56,13 @@ line-length = 88
             "boolean-type-hint-positional-argument",
             "line-too-long",
         ]
-        "tests/**/*" = [ "assert", "docstring-missing-returns", "print" ]
+        "tests/**/*" = [
+            "PLC2701",
+            "SLF001",
+            "assert",
+            "docstring-missing-returns",
+            "print",
+        ]
 
     [lint.pyupgrade]
         keep-runtime-typing = true

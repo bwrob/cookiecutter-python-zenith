@@ -30,15 +30,19 @@ Before setting up the environment, verify that the required system tools are
 installed:
 
 1. **Python 3.12+**:
+
    ```bash
    python3 --version
    ```
 
 2. **uv (Astral)**:
+
    ```bash
    uv --version
    ```
+
    If `uv` is not installed, install it via the official installer:
+
    ```bash
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```

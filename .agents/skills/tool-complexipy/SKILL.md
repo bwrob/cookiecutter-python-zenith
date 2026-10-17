@@ -7,7 +7,6 @@ name: tool-complexipy
 version: 1.0.0
 ---
 
-
 # complexipy Cognitive Complexity Analyzer (`tool-complexipy`)
 
 `complexipy` is an ultra-fast cognitive complexity analyzer for Python code

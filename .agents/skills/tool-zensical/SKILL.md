@@ -7,7 +7,6 @@ name: tool-zensical
 version: 1.0.0
 ---
 
-
 # Zensical Static Documentation Generator (`tool-zensical`)
 
 `zensical` is a modern, fast static documentation site generator built in Rust

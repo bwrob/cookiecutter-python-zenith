@@ -1,61 +1,68 @@
 [project]
-name = "zenith"
-version = "0.1.0"
-description = "Zenith: An opinionated, strict Cookiecutter template for modern Python projects using uv, ruff, pyrefly, complexipy, zensical, rumdl, tach, and poethepoet."
-readme = "README.md"
-requires-python = ">=3.12"
-authors = [{ name = "bwrob", email = "contact@bwrob.dev" }]
-classifiers = [
-  "Development Status :: 4 - Beta",
-  "Intended Audience :: Developers",
-  "Operating System :: OS Independent",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-  "Programming Language :: Python :: 3.14",
-  "Programming Language :: Python :: 3.15",
-  "Topic :: Software Development :: Build Tools",
-  "Topic :: Software Development :: Code Generators",
-  "Typing :: Typed",
-]
-dependencies = ["cookiecutter>=2.7.0"]
+    authors = [ { name = "bwrob", email = "contact@bwrob.dev" } ]
+    classifiers = [
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
+        "Programming Language :: Python :: 3.15",
+        "Topic :: Software Development :: Build Tools",
+        "Topic :: Software Development :: Code Generators",
+        "Typing :: Typed",
+    ]
+    dependencies = [ "cookiecutter>=2.7.0" ]
+    description = "Zenith: An opinionated, strict Cookiecutter template for modern Python projects using uv, ruff, pyrefly, complexipy, zensical, rumdl, tach, and poethepoet."
+    name = "zenith"
+    readme = "README.md"
+    requires-python = ">=3.12"
+    version = "0.1.0"
 
-[project.urls]
-Homepage = "https://github.com/bwrob/zenith"
-Repository = "https://github.com/bwrob/zenith.git"
+    [project.urls]
+        Homepage   = "https://github.com/bwrob/zenith"
+        Repository = "https://github.com/bwrob/zenith.git"
 
 [dependency-groups]
-dev = [
-  "poethepoet>=0.42.0",
-  "pre-commit>=4.0.0",
-  "pytest>=8.0.0",
-  "ruff>=0.17.0",
-]
+    dev = [
+        "poethepoet>=0.42.0",
+        "pre-commit>=4.0.0",
+        "pytest>=8.0.0",
+        "pytest-cov>=6.0.0",
+        "ruff>=0.17.0",
+        "taplo>=0.9.3",
+    ]
 
 [tool.uv]
-package = false
+    package = false
 
 [tool.poe.tasks]
-test = { cmd = "pytest", help = "Run unit test suite." }
-lint = { cmd = "ruff check", help = "Lint codebase with Ruff." }
-format = { cmd = "ruff format", help = "Format Python code with Ruff." }
-format-check = { cmd = "ruff format --check", help = "Check formatting with Ruff." }
-fix = { sequence = [
-  { cmd = "ruff check --fix" },
-  { cmd = "ruff format" },
-], help = "Auto-fix linting and formatting issues." }
-check-skills = { cmd = "python scripts/check_skills.py .agents/skills", help = "Validate agent skills structural invariants." }
-sync-example = { cmd = "python scripts/sync_example.py", help = "Render and sync showcase repository (zenith-example)." }
-code-quality = { sequence = [
-  "lint",
-  "format-check",
-  "check-skills",
-  "test",
-], help = "Run linting, formatting check, skills check, and test suite." }
+    check-skills = { cmd = "python scripts/check_skills.py .agents/skills", help = "Validate agent skills structural invariants." }
+    code-quality = { sequence = [
+        "lint",
+        "format-check",
+        "format-check-toml",
+        "check-skills",
+        "test",
+    ], help = "Run linting, formatting check, skills check, and test suite." }
+    fix = { sequence = [
+        { cmd = "ruff check --fix" },
+        { cmd = "ruff format" },
+        { cmd = "taplo format" },
+    ], help = "Auto-fix linting and formatting issues." }
+    format = { cmd = "ruff format", help = "Format Python code with Ruff." }
+    format-check = { cmd = "ruff format --check", help = "Check formatting with Ruff." }
+    format-check-toml = { cmd = "taplo format --check", help = "Check TOML configuration files with Taplo." }
+    format-toml = { cmd = "taplo format", help = "Format TOML configuration files with Taplo." }
+    lint = { cmd = "ruff check", help = "Lint codebase with Ruff." }
+    sync-example = { cmd = "python scripts/sync_example.py", help = "Render and sync showcase repository (zenith-example)." }
+    test = { cmd = "pytest --cov --cov-report=term-missing --cov-report=xml", help = "Run unit test suite with 100% coverage." }
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-norecursedirs = ["{{cookiecutter.project_slug}}", ".*", "build", "dist"]
+    norecursedirs = [ "{{cookiecutter.project_slug}}", ".*", "build", "dist" ]
+    pythonpath    = [ "." ]
+    testpaths     = [ "tests" ]
 
 [tool.ruff]
-extend-exclude = ["*cookiecutter.project_slug*"]
+    extend-exclude = [ "*cookiecutter.project_slug*" ]

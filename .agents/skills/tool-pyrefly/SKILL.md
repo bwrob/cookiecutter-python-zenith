@@ -7,7 +7,6 @@ name: tool-pyrefly
 version: 1.0.0
 ---
 
-
 # Pyrefly Static Type Checker (`tool-pyrefly`)
 
 `pyrefly` is Meta's next-generation, high-performance static type checker and
