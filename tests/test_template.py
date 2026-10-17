@@ -77,6 +77,7 @@ def test_default_generation(temp_output_dir: Path) -> None:
     assert (project_dir / ".github" / "codecov.yml").exists()
     for skill in [
         "adr",
+        "asd-ste100",
         "changelog-writing",
         "code-review",
         "git-workflow",
@@ -176,6 +177,17 @@ def test_default_generation(temp_output_dir: Path) -> None:
     ).exists()
     assert (
         project_dir / ".agents" / "skills" / "adr" / "templates" / "adr.md"
+    ).exists()
+    assert (
+        project_dir / ".agents" / "skills" / "asd-ste100" / "scripts" / "ste-lint.py"
+    ).exists()
+    assert (
+        project_dir
+        / ".agents"
+        / "skills"
+        / "asd-ste100"
+        / "references"
+        / "writing-rules.md"
     ).exists()
     assert (project_dir / "docs" / "adr" / "index.md").exists()
     assert (project_dir / "docs" / "adr" / "template.md").exists()

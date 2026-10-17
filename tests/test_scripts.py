@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 import pytest
 
-from scripts import check_skills, sync_example
+from scripts import check_skills, sync_example, sync_skills
 
 # --- check_skills.py tests ---
 
@@ -246,3 +246,122 @@ def test_sync_example_main() -> None:
     ):
         sync_example.main()
         mock_sync.assert_called_once_with(Path("/tmp/dest"), lock=False)
+
+
+# --- sync_skills.py tests ---
+
+
+def test_sync_skills_missing_source_or_target(tmp_path: Path) -> None:
+    non_existent = tmp_path / "missing"
+    existing = tmp_path / "exists"
+    existing.mkdir()
+
+    errs_src = sync_skills.sync_skills(non_existent, existing)
+    assert any("Source directory not found" in e for e in errs_src)
+
+    errs_tgt = sync_skills.sync_skills(existing, non_existent)
+    assert any("Target directory not found" in e for e in errs_tgt)
+
+
+def test_sync_skills_success_and_check(tmp_path: Path) -> None:
+    src_dir = tmp_path / "src_skills"
+    src_dir.mkdir()
+    (src_dir / "my-skill").mkdir()
+
+    tgt_dir = tmp_path / "tgt_skills"
+    tgt_dir.mkdir()
+
+    # Synchronize
+    errs = sync_skills.sync_skills(src_dir, tgt_dir, check_only=False)
+    assert errs == []
+    tgt_skill = tgt_dir / "my-skill"
+    assert tgt_skill.is_symlink()
+
+    # Check mode when already in sync
+    check_errs = sync_skills.sync_skills(src_dir, tgt_dir, check_only=True)
+    assert check_errs == []
+
+
+def test_sync_skills_check_drift_conditions(tmp_path: Path) -> None:
+    src_dir = tmp_path / "src_skills"
+    src_dir.mkdir()
+    (src_dir / "skill-a").mkdir()
+    (src_dir / "skill-b").mkdir()
+    (src_dir / "skill-c").mkdir()
+
+    tgt_dir = tmp_path / "tgt_skills"
+    tgt_dir.mkdir()
+
+    # skill-a is a symlink pointing to wrong place
+    (tgt_dir / "skill-a").symlink_to("../../wrong_path")
+    # skill-b is a directory
+    (tgt_dir / "skill-b").mkdir()
+    # skill-c does not exist in target
+
+    errs = sync_skills.sync_skills(src_dir, tgt_dir, check_only=True)
+    assert len(errs) == 3
+    assert any("skill-a: symlink points to" in e for e in errs)
+    assert any("skill-b: expected symlink" in e for e in errs)
+    assert any("skill-c: missing symlink" in e for e in errs)
+
+
+def test_sync_skills_overwrite_existing(tmp_path: Path) -> None:
+    src_dir = tmp_path / "src_skills"
+    src_dir.mkdir()
+    (src_dir / "skill-dir").mkdir()
+    (src_dir / "skill-file").mkdir()
+
+    tgt_dir = tmp_path / "tgt_skills"
+    tgt_dir.mkdir()
+
+    # Existing directory
+    dir_target = tgt_dir / "skill-dir"
+    dir_target.mkdir()
+    (dir_target / "nested.txt").write_text("old", encoding="utf-8")
+
+    # Existing regular file
+    file_target = tgt_dir / "skill-file"
+    file_target.write_text("old file", encoding="utf-8")
+
+    errs = sync_skills.sync_skills(src_dir, tgt_dir, check_only=False)
+    assert errs == []
+    assert dir_target.is_symlink()
+    assert file_target.is_symlink()
+
+    # Re-run with wrong symlink
+    dir_target.unlink()
+    dir_target.symlink_to("invalid")
+    errs2 = sync_skills.sync_skills(src_dir, tgt_dir, check_only=False)
+    assert errs2 == []
+    assert dir_target.is_symlink()
+
+
+def test_sync_skills_main(tmp_path: Path) -> None:
+    src_dir = tmp_path / "src"
+    src_dir.mkdir()
+    (src_dir / "sample").mkdir()
+
+    tgt_dir = tmp_path / "tgt"
+    tgt_dir.mkdir()
+
+    # Success sync
+    ret_sync = sync_skills.main(["--source", str(src_dir), "--target", str(tgt_dir)])
+    assert ret_sync == 0
+
+    # Success check
+    ret_check = sync_skills.main(
+        ["--source", str(src_dir), "--target", str(tgt_dir), "--check"]
+    )
+    assert ret_check == 0
+
+    # Failure sync (missing source)
+    ret_fail_sync = sync_skills.main(
+        ["--source", str(tmp_path / "nonexistent"), "--target", str(tgt_dir)]
+    )
+    assert ret_fail_sync == 1
+
+    # Failure check (missing source)
+    ret_fail_check = sync_skills.main(
+        ["--source", str(tmp_path / "nonexistent"), "--target", str(tgt_dir), "--check"]
+    )
+    assert ret_fail_check == 1
